@@ -31,6 +31,7 @@ public class Message {
             SB.append(0);
         }
         SB.append(HandShake_Code);
+        System.out.println(SB.toString().toCharArray());
         return(SB.toString().toCharArray());
     }
     public static char[] Handshake_ResponseMessage(char[] Pid) {

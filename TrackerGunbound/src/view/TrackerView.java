@@ -23,12 +23,16 @@ public class TrackerView extends javax.swing.JFrame {
 
     Tracker tracker;
     TrackerController trackercontroller;
+    String temporary="";
+
 
     public TrackerView() {
         initComponents();
         tracker = new Tracker("localhost",10,10);
         trackercontroller = new TrackerController(this);
         trackercontroller.start();
+        SetJumlahPeer();
+        setJumlahRoom();
         
     }
 
@@ -51,31 +55,38 @@ public class TrackerView extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         Label_JumlahPeer = new javax.swing.JLabel();
-        JumlahRoom = new javax.swing.JLabel();
+        Label_JumlahRoom = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Tracker Status");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel2.setText("List Peer Join");
 
         TextArea_ListPeer.setColumns(20);
         TextArea_ListPeer.setRows(5);
         jScrollPane1.setViewportView(TextArea_ListPeer);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         jLabel3.setText("List Room");
 
         TextArea_ListRoom.setColumns(20);
         TextArea_ListRoom.setRows(5);
         jScrollPane2.setViewportView(TextArea_ListRoom);
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Jumlah Peer  : ");
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Jumlah Room :");
 
+        Label_JumlahPeer.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         Label_JumlahPeer.setText("jLabel6");
 
-        JumlahRoom.setText("jLabel7");
+        Label_JumlahRoom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        Label_JumlahRoom.setText("jLabel7");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,22 +104,22 @@ public class TrackerView extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addGap(129, 129, 129))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                                 .addGap(26, 26, 26)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addContainerGap(32, Short.MAX_VALUE))
+                        .addContainerGap(54, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JumlahRoom)
-                        .addContainerGap(280, Short.MAX_VALUE))
+                        .addComponent(Label_JumlahRoom)
+                        .addContainerGap(291, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Label_JumlahPeer)
-                        .addContainerGap(279, Short.MAX_VALUE))))
+                        .addContainerGap(293, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,8 +133,8 @@ public class TrackerView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(JumlahRoom))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                    .addComponent(Label_JumlahRoom))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
@@ -144,6 +155,21 @@ public class TrackerView extends javax.swing.JFrame {
         return tracker;
     }
 
+    public void AddPeerView(String Pid) {
+        temporary = temporary + " [" +Pid+"] ";
+        this.TextArea_ListPeer.setText(temporary);
+    }
+
+    public void SetJumlahPeer() {
+        Integer jumlahpeer = tracker.CurSumPeers;
+        this.Label_JumlahPeer.setText(jumlahpeer.toString());
+    }
+
+    public void setJumlahRoom() {
+        Integer jumlahroom = tracker.CurSumPeers;
+        this.Label_JumlahRoom.setText(jumlahroom.toString());
+    }
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -153,8 +179,8 @@ public class TrackerView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel JumlahRoom;
     private javax.swing.JLabel Label_JumlahPeer;
+    private javax.swing.JLabel Label_JumlahRoom;
     private javax.swing.JTextArea TextArea_ListPeer;
     private javax.swing.JTextArea TextArea_ListRoom;
     private javax.swing.JLabel jLabel1;
@@ -166,4 +192,5 @@ public class TrackerView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 
+    
 }

@@ -5,7 +5,6 @@
 
 package protocol;
 
-import controller.TrackerControllerThread;
 
 /**
  *
@@ -13,16 +12,13 @@ import controller.TrackerControllerThread;
  */
 public class MessageProtocol {
 
-    TrackerControllerThread trackerController;
+  
 
     public static final int Ready_State = 0;
     public static final int WaitHandShake_State = 1;
 
-    private static int Cur_State;
+    private static int Cur_State = Ready_State;
 
-    public MessageProtocol() {
-        Cur_State = Ready_State;
-    }
     public static char GetMessageCode(char[] input) {
         return (input[19]);
     }
@@ -38,8 +34,8 @@ public class MessageProtocol {
         switch(Cur_State) {
             case Ready_State: {
                 if (code == Message.HandShake_Code) {
-                    output = Buildstring(input);
-                    
+                    output = input.toString();
+                    Cur_State = WaitHandShake_State;
                 } else {
                     output = Message.Failed_ResponseMessage().toString();
                 }
@@ -49,14 +45,4 @@ public class MessageProtocol {
         }
         return output;
     }
-    public static String Buildstring(char[] chars) {
-       String output = "";
-       StringBuilder SB = new StringBuilder();
-       for (int i=0; i < chars.length; i++) {
-           SB.append(chars[i]);
-       }
-       output = SB.toString();
-       return output;
-    }
 }
-

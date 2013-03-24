@@ -30,6 +30,10 @@ public class TrackerController extends Thread{
         return (tracker);
     }
 
+    public TrackerView GetTrackerView() {
+        return (trackerview);
+    }
+
     public void run () {
          try {
             ServerSocket serverSocket = null;
@@ -43,7 +47,7 @@ public class TrackerController extends Thread{
 
         while(listeningSocket){
             Socket clientSocket = serverSocket.accept();
-            TrackerControllerThread mini = new TrackerControllerThread(clientSocket,tracker);
+            TrackerControllerThread mini = new TrackerControllerThread(clientSocket,tracker,this);
             mini.start();
         }
         serverSocket.close();
