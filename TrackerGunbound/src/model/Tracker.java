@@ -14,83 +14,106 @@ import java.util.HashMap;
  */
 public class Tracker {
 
-    public int MaxSumPeers;
-    public int CurSumPeers;
-    public int MaxSumRooms;
-    public int CurSumRooms;
-    public HashMap<char[],Peer> Peers; //key : Id Peer; value : Peer
-    public HashMap<char[],Room> Rooms; // key : Id Room; value : Room
-    public String Address;
+    private int MaxSumPeers;
+    private int CurSumPeers;
+    private int MaxSumRooms;
+    private int CurSumRooms;
+    private ArrayList<Peer> Peers;
+    private ArrayList<Room> Rooms;
+    private String Address;
+    private int Port;
    
 
-    public Tracker(String ip,int _MaxSumPeers,int _MaxSumRooms) {
-        Peers = new HashMap<char[],Peer>();
-        Rooms = new HashMap<char[],Room>();
+    public Tracker(String _Address,int _Port,int _MaxSumPeers,int _MaxSumRooms) {
+        Peers = new ArrayList<Peer>();
+        Rooms = new ArrayList<Room>();
         MaxSumPeers = _MaxSumPeers;
         CurSumPeers = 0;
         MaxSumRooms = _MaxSumRooms;
         CurSumRooms = 0;
-        Address = ip;
-    }
-
-    public void StartGame(char[] RoomId) {
-        DeleteRoom(RoomId);
+        Address = _Address;
+        Port = _Port;
     }
     
 
-    
-    public void AddPeerToRoom(char[] Pid,char[] RoomId) {
-        Rooms.get(RoomId).AddPeerToRoom(Peers.get(Pid));
+    //getter
+
+    public String GetAddress() {
+        return Address;
+    }
+    public int GetPort() {
+        return Port;
+    }
+    public int GetCurrentSumPeer() {
+        return CurSumPeers;
+    }
+    public int GetCurrentSumRoom() {
+        return CurSumRooms;
+    }
+    public ArrayList<Peer> GetAllPeers() {
+        return Peers;
+    }
+    public ArrayList<Room> GetAllRooms() {
+        return Rooms;
     }
 
 
-    public boolean IsTrackerCanAddPeer() {
+
+    // fungsi lainnya
+     public boolean IsTrackerCanAddPeer() {
         return (CurSumPeers+1 < MaxSumPeers);
     }
     public boolean IsTrackerCanAddRoom() {
         return(CurSumRooms+1 < MaxSumRooms);
-    }
 
-    public void AddPeer(char[] Pid,String _Address,int _Port) {
+    }
+    public void AddPeerToRoom(Peer peer, Room room) {
+       for (Room r : Rooms) {
+           if(r.equals(room)) {
+               r.AddPeerToRoom(peer);
+           }
+       }
+    }
+   
+    public void AddPeerToTracker(int Pid) {
         if (IsTrackerCanAddPeer()) {
-            Peer newPeer = new Peer(Pid.toString(), _Address, _Port);
-            Peers.put(Pid, newPeer);
+            Peer newPeer = new Peer(Pid, Address, Port);
+            Peers.add(newPeer);
             CurSumPeers++;
         }
     }
-    public void DeletePeer(char[] Pid) {
-        if (IsThisPeerExist(Pid)) {
-            Peers.remove(Pid);
-        }
+    public void DeletePeer(int Pid) {
+        for (Peer P : Peers) {
+           if(P.GetID() == Pid) {
+               Peers.remove(P);
+           }
+       }
     }
-    public boolean IsThisPeerExist(char[] Pid) {
-        return(Peers.containsKey(Pid));
+    public boolean IsThisPeerExist(Peer P) {
+        return(Peers.contains(P));
     }
 
-    public void AddRoom(char[] RoomID,char[] PeerCreatorID,int maxpeerjoin) {
+    public void AddRoom(String RoomID,Peer PeerCreator,byte maxpeerjoin) {
         if (IsTrackerCanAddRoom()) {
-            Room newRoom = new Room(RoomID, maxpeerjoin, Peers.get(PeerCreatorID));
-            Rooms.put(RoomID, newRoom);
+            Room newRoom = new Room(RoomID, maxpeerjoin, PeerCreator);
+            Rooms.add(newRoom);
             CurSumRooms++;
         }
     }
 
-    public void DeleteRoom(char[] RoomId) {
-        if (IsThisRoomExist(RoomId)) {
-            Rooms.remove(RoomId);
-            CurSumRooms--;
-        }
+    public void DeleteRoom(String RoomId) {
+        for (Room R : Rooms) {
+           if(R.GetID().equals(RoomId)) {
+               Rooms.remove(R);
+           }
+       }
     }
 
-    public boolean IsThisRoomExist(char[] RoomId) {
-        return(Rooms.containsKey(RoomId));
+    public boolean IsThisRoomExist(Room room) {
+        return(Rooms.contains(room));
     }
 
-    public ArrayList<char[]> GetAllPeer() {
-        ArrayList<char[]> temp = new ArrayList<char[]>();
-       
-        return temp;
-    }
+    
 
     
     

@@ -5,142 +5,102 @@
 
 package protocol;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author DELL
  */
-public class Message {
-    public static char HandShake_Code = 135;
-    public static char KeepAlive_Code = 182;
-    public static char CreateRoom_Code = 255;
-    public static char List_Code = 254;
-    public static char Room_Code = 200;
-    public static char Success_Code = 127;
-    public static char Failed_Code = 128;
-    public static char Join_Code = 253;
-    public static char Start_Code = 252;
-    public static char Quit_Code = 135;
+public class Message{
+    public static byte HandShake_Code = (byte) 135;
+    public static byte KeepAlive_Code = (byte) 182;
+    public static byte CreateRoom_Code = (byte) 255;
+    public static byte List_Code = (byte) 254;
+    public static byte Room_Code = (byte) 200;
+    public static byte Success_Code = (byte)127;
+    public static byte Failed_Code = (byte) 128;
+    public static byte Join_Code = (byte) 253;
+    public static byte Start_Code = (byte) 252;
+    public static byte Quit_Code = (byte) 135;
 
-    public static String pstr = "GunbondGame";
-    public static int reserved_Length = 8;
+    
 
-    public static char[] Handshake_RequestMessage() {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(HandShake_Code);
-        return(SB.toString().toCharArray());
+
+    public static byte[] Handshake_RequestMessage() {
+        MessageBuilder MB = new MessageBuilder(20);
+        MB.setCode(HandShake_Code);
+        return (MB.getMessageBytes());
     }
-    public static char[] Handshake_ResponseMessage(char[] Pid) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(HandShake_Code);
-        SB.append(Pid);
-        return(SB.toString().toCharArray());
+    public static byte[] Handshake_ResponseMessage(int Pid) {
+        MessageBuilder MB = new MessageBuilder(24);
+        MB.setCode(HandShake_Code);
+        MB.writeIntToMsgBytes(20, Pid);
+        return (MB.getMessageBytes());
     }
-    public static char[] KeepAlive_RequestMessage(char[] Pid) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(KeepAlive_Code);
-        SB.append(Pid);
-        return(SB.toString().toCharArray());
-    }
-    public static char[] CreateRoom_RequestMessage(char[] Pid,int max_player,char[] roomID) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(CreateRoom_Code);
-        SB.append(Pid);
-        SB.append(max_player);
-        SB.append(roomID);
-        return(SB.toString().toCharArray());
-    }
-    public static char[] ListRoom_RequestMessage(char[] Pid) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(List_Code);
-        SB.append(Pid);
-        return(SB.toString().toCharArray());
+   public static byte[] KeepAlive_RequestMessage(int Pid) {
+        MessageBuilder MB = new MessageBuilder(24);
+        MB.setCode(KeepAlive_Code);
+        MB.writeIntToMsgBytes(20, Pid);
+        return (MB.getMessageBytes());
+   }
+   public static byte[] CreateRoom_RequestMessage(int Pid,byte max_player,String roomID) {
+        MessageBuilder MB = new MessageBuilder(75);
+        MB.setCode(CreateRoom_Code);
+        MB.writeIntToMsgBytes(20, Pid);
+        MB.writeByteToMsgBytes(24, max_player);
+        MB.writeStrToMsgBytes(25, 50, roomID);
+        return (MB.getMessageBytes());
+   }
+   public static byte[] ListRoom_RequestMessage(int Pid) {
+       MessageBuilder MB = new MessageBuilder(24);
+       MB.setCode(List_Code);
+       MB.writeIntToMsgBytes(20, Pid);
+       return (MB.getMessageBytes());
+   }
+
+    public static byte[] ListRoom_ResponseMessage(byte room_count,ArrayList<String> rooms) {
+       int size = 21 + (50*room_count);
+       MessageBuilder MB = new MessageBuilder(size);
+       MB.setCode(Room_Code);
+       MB.writeByteToMsgBytes(20, room_count);
+       int offset = 21;
+       for (String s : rooms) {
+           MB.writeStrToMsgBytes(offset, 50, s);
+       }
+       return (MB.getMessageBytes());
     }
 
-    public static char[] ListRoom_ResponseMessage(int room_count,char [][] rooms) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(Room_Code);
-        SB.append(room_count);
-        for (int i=0; i < room_count; i++) {
-            SB.append(rooms[i]);
-        }
-        return(SB.toString().toCharArray());
+    public static byte[] Success_ResponseMessage() {
+       MessageBuilder MB = new MessageBuilder(20);
+       MB.setCode(Success_Code);
+       return(MB.getMessageBytes());
     }
 
-    public static char[] Success_ResponseMessage() {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(Success_Code);
-        return(SB.toString().toCharArray());
+    public static byte[] Failed_ResponseMessage() {
+       MessageBuilder MB = new MessageBuilder(20);
+       MB.setCode(Failed_Code);
+       return(MB.getMessageBytes());
     }
 
-     public static char[] Failed_ResponseMessage() {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(Failed_Code);
-        return(SB.toString().toCharArray());
+    public static byte[] JoinRoom_RequestMessage(int PId, String roomId) {
+       MessageBuilder MB = new MessageBuilder(74);
+       MB.setCode(Join_Code);
+       MB.writeIntToMsgBytes(20,PId);
+       MB.writeStrToMsgBytes(24, 50, roomId);
+       return (MB.getMessageBytes());
     }
-
-    public static char[] JoinRoom_RequestMessage(char PId, char roomId) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(Join_Code);
-        SB.append(PId);
-        SB.append(roomId);
-        return(SB.toString().toCharArray());
-    }
-    public static char[] StartGame_RequestMessage(char PId, char roomId) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(Start_Code);
-        SB.append(PId);
-        SB.append(roomId);
-        return(SB.toString().toCharArray());
-    }
-    public static char[] QuitRoom_RequestMessage(char PId) {
-        StringBuilder SB = new StringBuilder();
-        SB.append(pstr);
-        for (int i=0; i < reserved_Length; i++) {
-            SB.append(0);
-        }
-        SB.append(Quit_Code);
-        SB.append(PId);
-        return(SB.toString().toCharArray());
+    public static byte[] StartGame_RequestMessage(int PId, String roomId) {
+       MessageBuilder MB = new MessageBuilder(74);
+       MB.setCode(Start_Code);
+       MB.writeIntToMsgBytes(20,PId);
+       MB.writeStrToMsgBytes(24, 50, roomId);
+       return (MB.getMessageBytes());
+    }    
+    public static byte[] QuitRoom_RequestMessage(int PId) {
+       MessageBuilder MB = new MessageBuilder(24);
+       MB.setCode(Quit_Code);
+       MB.writeIntToMsgBytes(20,PId);
+       return (MB.getMessageBytes());
     }
 
     

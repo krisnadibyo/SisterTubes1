@@ -28,7 +28,7 @@ public class TrackerView extends javax.swing.JFrame {
 
     public TrackerView() {
         initComponents();
-        tracker = new Tracker("localhost",10,10);
+        tracker = new Tracker("localhost", 4444, 10, 10);
         trackercontroller = new TrackerController(this);
         trackercontroller.start();
         SetJumlahPeer();
@@ -161,12 +161,12 @@ public class TrackerView extends javax.swing.JFrame {
     }
 
     public void SetJumlahPeer() {
-        Integer jumlahpeer = tracker.CurSumPeers;
+        Integer jumlahpeer = tracker.GetCurrentSumPeer();
         this.Label_JumlahPeer.setText(jumlahpeer.toString());
     }
 
     public void setJumlahRoom() {
-        Integer jumlahroom = tracker.CurSumPeers;
+        Integer jumlahroom = tracker.GetCurrentSumRoom();
         this.Label_JumlahRoom.setText(jumlahroom.toString());
     }
 

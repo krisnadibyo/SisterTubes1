@@ -25,10 +25,10 @@ public class PeerView extends javax.swing.JFrame {
 
     public PeerView() {
         initComponents();
-        peer = new Peer("","127.0.0.1", 4444);
+        peer = new Peer(-1,"127.0.0.1", 4444);
         setLabel_Status(false);
         peercontroller = new PeerController(this);
-        peercontroller.start();
+        
         
     }
 
@@ -206,7 +206,7 @@ public class PeerView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       peercontroller.interrupt();
+       peercontroller.HandshakeTracker();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

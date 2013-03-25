@@ -22,7 +22,7 @@ import view.PeerView;
  *
  * @author DELL
  */
-public class PeerController extends Thread{
+public class PeerController{
     private Peer peer;
     private Socket socket = null;
     private PrintWriter out = null;
@@ -34,8 +34,9 @@ public class PeerController extends Thread{
         peer = peerview.GetPeer();
     }
 
-    public void HandshakeTracker() {
-         String tmp;
+
+    public void HandshakeTracker() throws IOException{
+        byte[] input = null;
         boolean connectionStatus = true;
         try {
             socket = new Socket(peer.GetTrackerAddress(), peer.GetTrackerPort());
@@ -50,38 +51,18 @@ public class PeerController extends Thread{
         }
         if(connectionStatus) {
             out.println(Message.Handshake_RequestMessage());           
-            try {
-                tmp=in.readLine();
-                System.out.println(tmp);
-                if(MessageProtocol.GetMessageCode(tmp.toCharArray()) == Message.HandShake_Code){ 
-                    String peerIP = ((int)tmp.charAt(20)+"."+(int)tmp.charAt(21)+"."+(int)tmp.charAt(22)+"."+(int)tmp.charAt(23));
-                    String peerID = ((int)tmp.charAt(20)+""+(int)tmp.charAt(21)+""+(int)tmp.charAt(22)+""+(int)tmp.charAt(23)+"");
-                    
-                    peer.SetID(peerID);
-                    peer.SetStatusConnection(true);
-                    peerview.setLabel_IP(peerIP);
-                    peerview.seLabel_ID(peerID);
-                    peerview.setLabel_Status(true);
-                    System.out.println(peerID);
+            boolean ack = false;
+            while ((input = in.readLine().getBytes()) != null) {
+                System.out.println("masuk sini");
+                System.out.println(input);
+                if (input != null) {
+                    break;
                 }
-
-             } catch (IOException ex) {
-         
-              }
+            }
         }
       
     }
-        public void run() {
-        while (true) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ex) {
-                  HandshakeTracker();
-              
-               }
-            }
-        }
-
+       
 }
     
     

@@ -10,20 +10,28 @@ package model;
  * @author DELL
  */
 public class Peer {
-    private char[] Pid;
+    private int Pid;
     private String Tracker_Address;
     private int Tracker_Port;
     private boolean StatusConnection;
 
-    public Peer(String _Pid,String _Tracker_address, int _Tracker_Port) {
-        Pid = _Pid.toCharArray();
+
+    public Peer(int _Pid){
+        Pid = _Pid;
+        Tracker_Address = "localhost";
+        Tracker_Port = 4444;
+        StatusConnection = false;
+    }
+    public Peer(int _Pid,String _Tracker_address, int _Tracker_Port) {
+        Pid = _Pid;
         Tracker_Address = _Tracker_address;
         Tracker_Port = _Tracker_Port;
+        StatusConnection = false;
     }
 
     //Getter
 
-    public char[] GetID () {
+    public int GetID () {
         return (Pid);
     }
     public String GetTrackerAddress() {
@@ -39,8 +47,8 @@ public class Peer {
     //setter
 
 
-    public void SetID(String _Pid) {
-        Pid = _Pid.toCharArray();
+    public void SetID(int _Pid) {
+        Pid = _Pid;
     }
     public void SetTrackerAddress(String _Tracker_Address) {
         Tracker_Address = _Tracker_Address;

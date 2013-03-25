@@ -45,30 +45,15 @@ public class TrackerControllerThread extends Thread{
                     new InputStreamReader(
                     clientsocket.getInputStream()));
 
-            char[] inputLine = null;
-            char[] outputLine = null;
-            String InputProtocol=null;
-            String OutputProtocol=null;
-            System.out.println("Masuk run tracker thread");
-            MessageProtocol MP = new MessageProtocol();
+            byte[] inputLine = null;
+            byte[] outputLine = null;
+           
             do {
-                inputLine = in.readLine().toCharArray();
-                InputProtocol = MP.Process(inputLine);            
-                if (MessageProtocol.GetMessageCode(InputProtocol.toCharArray())== Message.HandShake_Code) {
-                    if (tracker.IsTrackerCanAddPeer()) {
-                        System.out.println("Peer ID : " + BuildPeerID());
-                        tracker.AddPeer(BuildPeerID(),tracker.Address, 4444);
-                        outputLine = Message.Handshake_ResponseMessage(BuildPeerID());
-                        trackercontroller.GetTrackerView().AddPeerView(BuildPeerIP(BuildPeerID()));
-                        trackercontroller.GetTrackerView().SetJumlahPeer();
-                        out.println(outputLine);
-                    }
-                    else {
-                        outputLine = Message.Failed_ResponseMessage();
-                        out.println(outputLine);
-                    }
-                }
-
+               inputLine =  in.readLine().getBytes();
+               System.out.println("Messsage dari peer: " + inputLine);
+               outputLine = Message.Handshake_ResponseMessage(1);
+               out.print(outputLine);
+                         
             } while(StatusConnection);
           
 
@@ -77,33 +62,6 @@ public class TrackerControllerThread extends Thread{
         }
     }
    
-
-    public Tracker getTracker() {
-        return tracker;
-    }
-
-     private char[] BuildPeerID() {
-        char byte1 = 127;
-        char byte2 = 0;
-        char byte3 = 0;
-        char byte4 = (char) (tracker.CurSumPeers+1) ;
-        char[] chars = new char[4];
-        chars[0] = byte1;
-        chars[1] = byte2;
-        chars[2] = byte3;
-        chars[3] = byte4;
-        return chars;
-    }
-
-     private String BuildPeerIP(char[] chars) {
-         String output="";
-         Integer byte1 = (int) chars[0];
-         Integer byte2 = (int) chars[1];
-         Integer byte3 = (int) chars[2];
-         Integer byte4 = (int) chars[3];
-         output = byte1.toString() + "." + byte2.toString() + "." + byte3.toString()+ "." + byte4.toString();
-         return output;
-     }
 
    
 }

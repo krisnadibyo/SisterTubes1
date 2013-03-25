@@ -5,7 +5,7 @@
 
 package protocol;
 
-import controller.TrackerControllerThread;
+
 
 /**
  *
@@ -13,7 +13,7 @@ import controller.TrackerControllerThread;
  */
 public class MessageProtocol {
 
-    TrackerControllerThread trackerController;
+
 
     public static final int Ready_State = 0;
     public static final int WaitHandShake_State = 1;
