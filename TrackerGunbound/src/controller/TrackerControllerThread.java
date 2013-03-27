@@ -52,6 +52,7 @@ public class TrackerControllerThread extends Thread{
                inputLine =  in.readLine().getBytes();
                System.out.println("Messsage dari peer: " + inputLine);
                outputLine = Message.Handshake_ResponseMessage(1);
+               System.out.println("Output Line = " + outputLine);
                out.print(outputLine);
                          
             } while(StatusConnection);

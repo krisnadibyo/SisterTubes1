@@ -22,21 +22,22 @@ import view.PeerView;
  *
  * @author DELL
  */
-public class PeerController{
+public class PeerController extends Thread {
     private Peer peer;
     private Socket socket = null;
     private PrintWriter out = null;
     private BufferedReader in = null;
     private PeerView peerview;
-
+       byte[] inputLine = null;
+       
     public PeerController(PeerView _peerview) {
         peerview = _peerview;
         peer = peerview.GetPeer();
     }
 
 
-    public void HandshakeTracker() throws IOException{
-        byte[] input = null;
+    public void HandshakeTracker() {
+     
         boolean connectionStatus = true;
         try {
             socket = new Socket(peer.GetTrackerAddress(), peer.GetTrackerPort());
@@ -50,17 +51,35 @@ public class PeerController{
             System.out.println("IOException");
         }
         if(connectionStatus) {
-            out.println(Message.Handshake_RequestMessage());           
-            boolean ack = false;
-            while ((input = in.readLine().getBytes()) != null) {
-                System.out.println("masuk sini");
-                System.out.println(input);
-                if (input != null) {
-                    break;
-                }
-            }
+            peer.SetStatusConnection(true);
+            System.out.println("MAsuk sini");
+            out.println(Message.Handshake_RequestMessage());
+           
+          
         }
       
+    }
+
+    public void run() {
+        while (true) {
+            System.out.println("Masuk while");
+            try {
+                Thread.sleep(100);
+                if (peer.GetStatusConnection()) {
+                    System.out.println("masuk status connected");
+                    try {
+                       inputLine=  in.readLine().getBytes();
+                        System.out.println("Message dari tracker = " + inputLine);
+                    } catch (IOException ex) {
+                        Logger.getLogger(PeerController.class.getName()).log(Level.SEVERE, null, ex);
+                        System.out.println("masuk IOException");
+                    }
+                }
+                
+            } catch (InterruptedException ex) {
+                HandshakeTracker();
+            }
+        }
     }
        
 }
