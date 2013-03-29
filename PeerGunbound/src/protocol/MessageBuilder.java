@@ -11,8 +11,9 @@ package protocol;
  */
 public class MessageBuilder {
     public static final String PSTR = "GunbondGame";
-    protected byte[] _msgBytes;
+    public byte[] _msgBytes;
 
+  
     public MessageBuilder(int size, boolean isEmptyMessage) {
         _msgBytes = new byte[size];
 
@@ -141,6 +142,14 @@ public class MessageBuilder {
         }
 
         return val;
+    }
+
+    public String GetAllMessageInString() {
+        StringBuilder sb = new StringBuilder(_msgBytes.length + 1);
+        for (int i = 0; i < _msgBytes.length; i++) {
+            sb.append((char) (_msgBytes[i + 0] & 0xff));
+        }
+        return sb.toString();
     }
 }
 

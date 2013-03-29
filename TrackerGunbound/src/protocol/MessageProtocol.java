@@ -23,7 +23,7 @@ public class MessageProtocol {
     public MessageProtocol() {
         Cur_State = Ready_State;
     }
-    public static char GetMessageCode(char[] input) {
+    public static byte GetMessageCode(byte[] input) {
         return (input[19]);
     }
 
@@ -32,23 +32,23 @@ public class MessageProtocol {
 //
 //    }
 
-    public static String Process(char[] input) {
-        String output = null;
-        char code = GetMessageCode(input);
-        switch(Cur_State) {
-            case Ready_State: {
-                if (code == Message.HandShake_Code) {
-                    output = Buildstring(input);
-                    
-                } else {
-                    output = Message.Failed_ResponseMessage().toString();
-                }
-                break;
-            }
-
-        }
-        return output;
-    }
+//    public static String Process(char[] input) {
+//        String output = null;
+//     //   char code = GetMessageCode(input);
+//        switch(Cur_State) {
+//            case Ready_State: {
+//                if (code == Message.HandShake_Code) {
+//                    output = Buildstring(input);
+//
+//                } else {
+//                    output = Message.Failed_ResponseMessage().toString();
+//                }
+//                break;
+//            }
+//
+//        }
+//        return output;
+//    }
     public static String Buildstring(char[] chars) {
        String output = "";
        StringBuilder SB = new StringBuilder();

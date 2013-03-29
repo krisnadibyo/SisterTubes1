@@ -12,6 +12,9 @@
 package view;
 
 import controller.TrackerController;
+import java.util.ArrayList;
+import model.Peer;
+import model.Room;
 
 import model.Tracker;
 
@@ -56,37 +59,53 @@ public class TrackerView extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         Label_JumlahPeer = new javax.swing.JLabel();
         Label_JumlahRoom = new javax.swing.JLabel();
+        Button_ListPeer = new javax.swing.JButton();
+        Button_ListRoom = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel1.setText("Tracker Status");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15));
         jLabel2.setText("List Peer Join");
 
         TextArea_ListPeer.setColumns(20);
         TextArea_ListPeer.setRows(5);
         jScrollPane1.setViewportView(TextArea_ListPeer);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 15));
         jLabel3.setText("List Room");
 
         TextArea_ListRoom.setColumns(20);
         TextArea_ListRoom.setRows(5);
         jScrollPane2.setViewportView(TextArea_ListRoom);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel4.setText("Jumlah Peer  : ");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel5.setText("Jumlah Room :");
 
-        Label_JumlahPeer.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        Label_JumlahPeer.setFont(new java.awt.Font("Tahoma", 0, 14));
         Label_JumlahPeer.setText("jLabel6");
 
-        Label_JumlahRoom.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        Label_JumlahRoom.setFont(new java.awt.Font("Tahoma", 0, 14));
         Label_JumlahRoom.setText("jLabel7");
+
+        Button_ListPeer.setText("Refresh");
+        Button_ListPeer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_ListPeerActionPerformed(evt);
+            }
+        });
+
+        Button_ListRoom.setText("Refresh");
+        Button_ListRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Button_ListRoomActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,13 +121,18 @@ public class TrackerView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGap(129, 129, 129))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Button_ListPeer)
+                                .addGap(52, 52, 52))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                                 .addGap(26, 26, 26)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Button_ListRoom)))
                         .addContainerGap(54, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -134,10 +158,12 @@ public class TrackerView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(Label_JumlahRoom))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(Button_ListPeer)
+                    .addComponent(Button_ListRoom))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -147,6 +173,14 @@ public class TrackerView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void Button_ListPeerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ListPeerActionPerformed
+       ListPeer();
+    }//GEN-LAST:event_Button_ListPeerActionPerformed
+
+    private void Button_ListRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ListRoomActionPerformed
+       ListRoom();
+    }//GEN-LAST:event_Button_ListRoomActionPerformed
 
     /**
     * @param args the command line arguments
@@ -170,6 +204,25 @@ public class TrackerView extends javax.swing.JFrame {
         this.Label_JumlahRoom.setText(jumlahroom.toString());
     }
 
+    public void ListPeer() {
+        ArrayList<Peer> temp = tracker.GetAllPeers();
+        String S = "";
+        for (Peer P : temp) {
+            Integer id = P.GetID();
+            S = S +" [ " +id.toString() + " ] ";
+        }
+        TextArea_ListPeer.setText(S);
+    }
+
+    public void ListRoom() {
+        ArrayList<Room> temp = tracker.GetAllRooms();
+        String S = "";
+        for (Room R : temp) {
+            S = S + " { " +R.GetID() + " } ";
+        }
+        TextArea_ListRoom.setText(S);
+    }
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -179,6 +232,8 @@ public class TrackerView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Button_ListPeer;
+    private javax.swing.JButton Button_ListRoom;
     private javax.swing.JLabel Label_JumlahPeer;
     private javax.swing.JLabel Label_JumlahRoom;
     private javax.swing.JTextArea TextArea_ListPeer;

@@ -16,7 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import model.Tracker;
 import protocol.Message;
+import protocol.MessageBuilder;
 import protocol.MessageProtocol;
+import view.TrackerView;
 
 
 /**
@@ -27,6 +29,7 @@ public class TrackerControllerThread extends Thread{
     private Socket clientsocket;
     private Tracker tracker;
     private TrackerController trackercontroller;
+    private TrackerView trackerview;
     private PrintWriter out;
     private BufferedReader in;
     private boolean StatusConnection = true;
@@ -36,6 +39,20 @@ public class TrackerControllerThread extends Thread{
         clientsocket = _clientSocket;
         tracker = _tracker;
         trackercontroller = TC;
+        trackerview = TC.GetTrackerView();
+    }
+
+     public String SendMessage(byte [] msg) {
+        MessageBuilder MB = new MessageBuilder(msg);
+        return (MB.GetAllMessageInString());
+    }
+
+    public byte[] ReceiveMessage(String S) {
+        int msgLength = S.length();
+        System.out.println(msgLength);
+        MessageBuilder MB = new MessageBuilder(msgLength);
+        MB.writeStrToMsgBytes(0, S.length(), S);
+        return (MB.getMessageBytes());
     }
 
     public void run() {
@@ -45,18 +62,33 @@ public class TrackerControllerThread extends Thread{
                     new InputStreamReader(
                     clientsocket.getInputStream()));
 
-            byte[] inputLine = null;
-            byte[] outputLine = null;
-           
-            do {
-               inputLine =  in.readLine().getBytes();
-               System.out.println("Messsage dari peer: " + inputLine);
-               outputLine = Message.Handshake_ResponseMessage(1);
-               System.out.println("Output Line = " + outputLine);
-               out.print(outputLine);
-                         
-            } while(StatusConnection);
-          
+            String inputLine = null;
+                     
+            while ((inputLine = in.readLine()) != null) {
+                byte[] IsiMessage = ReceiveMessage(inputLine);
+               
+                MessageBuilder MB = new MessageBuilder(IsiMessage);
+                if (MB.getCode() == Message.HandShake_Code) {
+                    if (tracker.IsTrackerCanAddPeer()) {
+                        int giveID = tracker.GetCurrentSumPeer()+1;
+                        tracker.AddPeerToTracker(giveID);
+                        out.println(SendMessage(Message.Handshake_ResponseMessage(giveID)));
+                        trackerview.SetJumlahPeer();
+                    }
+                    else {
+                        
+                    }
+                }
+                else if (MB.getCode() == Message.CreateRoom_Code) {
+                    if (tracker.IsTrackerCanAddRoom()) {
+                        tracker.AddRoom(MB.GetRoomID(), tracker.GetPeer(MB.getPeerId()), MB.GetJumlahMaxRoom());
+                        out.println(SendMessage(Message.Success_ResponseMessage()));
+                        trackerview.setJumlahRoom();
+                    }
+                }
+                
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();

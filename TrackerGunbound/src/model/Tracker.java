@@ -22,6 +22,7 @@ public class Tracker {
     private ArrayList<Room> Rooms;
     private String Address;
     private int Port;
+  
    
 
     public Tracker(String _Address,int _Port,int _MaxSumPeers,int _MaxSumRooms) {
@@ -111,6 +112,26 @@ public class Tracker {
 
     public boolean IsThisRoomExist(Room room) {
         return(Rooms.contains(room));
+    }
+
+    public Peer GetPeer(int pID) {
+        Peer Presult = null;
+        for (Peer P : Peers) {
+            if (P.GetID() == pID) {
+                Presult = P;
+            }
+        }
+        return (Presult);
+    }
+
+     public Room GetRoom(String RoomID) {
+        Room Rresult = null;
+        for (Room R : Rooms) {
+            if (R.GetID().equals(RoomID)) {
+                Rresult = R;
+            }
+        }
+        return (Rresult);
     }
 
     
