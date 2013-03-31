@@ -6,8 +6,7 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import javax.print.DocFlavor.CHAR_ARRAY;
+
 
 /**
  *
@@ -27,6 +26,7 @@ public class Room {
         PeerList = new ArrayList<Peer>();
         PeerList.add(PeerCreator);
         CurrentPeerJoin = 1;
+        
     }
 
     //getter
@@ -35,6 +35,9 @@ public class Room {
     }
     public int GetSumCurrentPeer() {
         return(CurrentPeerJoin);
+    }
+    public Integer GetMaxPeerJoin() {
+        return(new Integer(MaxPeerJoin));
     }
     public Peer GetPeerCreator() {
         return (PeerCreator);
@@ -57,6 +60,18 @@ public class Room {
 
     public boolean IsThisPeerInThisRoom(Peer peer) {
         return(PeerList.contains(peer));
+    }
+
+    public boolean IsThisPeerCreator(Peer peer) {
+        return((IsThisPeerCreator(peer)) && (peer.equals(PeerCreator)));
+    }
+
+    public boolean CanAddPeer() {
+        return (CurrentPeerJoin +1 <= MaxPeerJoin);
+    }
+
+    public ArrayList<Peer> getPeerList() {
+        return PeerList;
     }
 
 }

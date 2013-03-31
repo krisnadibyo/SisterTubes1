@@ -66,6 +66,7 @@ public class Message{
        int offset = 21;
        for (String s : rooms) {
            MB.writeStrToMsgBytes(offset, 50, s);
+           offset = offset + 50;
        }
        return (MB.getMessageBytes());
     }

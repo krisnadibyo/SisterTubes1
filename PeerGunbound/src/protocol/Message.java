@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author DELL
+ * @author Krisna Dibyo Atmojo
  */
 public class Message{
     public static byte HandShake_Code = (byte) 135;

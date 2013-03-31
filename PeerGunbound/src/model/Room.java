@@ -36,6 +36,9 @@ public class Room {
     public int GetSumCurrentPeer() {
         return(CurrentPeerJoin);
     }
+    public Integer GetMaxPeerJoin() {
+        return(new Integer(MaxPeerJoin));
+    }
     public Peer GetPeerCreator() {
         return (PeerCreator);
     }

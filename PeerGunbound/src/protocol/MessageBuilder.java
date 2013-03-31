@@ -5,6 +5,8 @@
 
 package protocol;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author DELL
@@ -150,6 +152,24 @@ public class MessageBuilder {
             sb.append((char) (_msgBytes[i + 0] & 0xff));
         }
         return sb.toString();
+    }
+
+    public byte GetJumlahRoom() {
+        return (_msgBytes[20]);
+    }
+
+    public ArrayList<String> GetListRoom() {
+        ArrayList<String> listroom = new ArrayList<String>();
+        int Nroom = (int) GetJumlahRoom();
+        if (Nroom != 0) {
+            int offset = 21;
+            for (int i= 0; i < Nroom; i++) {
+                String s = getStringFromMsgBytes(offset, 50);
+                listroom.add(s);
+                offset = offset + 50;
+            }
+        }
+        return (listroom);
     }
 }
 

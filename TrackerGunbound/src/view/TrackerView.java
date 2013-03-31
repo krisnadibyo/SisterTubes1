@@ -13,6 +13,8 @@ package view;
 
 import controller.TrackerController;
 import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 import model.Peer;
 import model.Room;
 
@@ -20,7 +22,7 @@ import model.Tracker;
 
 /**
  *
- * @author DELL
+ * @author Krisna Dibyo Atmojo
  */
 public class TrackerView extends javax.swing.JFrame {
 
@@ -36,7 +38,7 @@ public class TrackerView extends javax.swing.JFrame {
         trackercontroller.start();
         SetJumlahPeer();
         setJumlahRoom();
-        
+       
     }
 
     /** This method is called from within the constructor to
@@ -50,17 +52,16 @@ public class TrackerView extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TextArea_ListPeer = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        TextArea_ListRoom = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         Label_JumlahPeer = new javax.swing.JLabel();
         Label_JumlahRoom = new javax.swing.JLabel();
         Button_ListPeer = new javax.swing.JButton();
-        Button_ListRoom = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Table_ListRoom = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Table_ListPeer = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,16 +71,8 @@ public class TrackerView extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15));
         jLabel2.setText("List Peer Join");
 
-        TextArea_ListPeer.setColumns(20);
-        TextArea_ListPeer.setRows(5);
-        jScrollPane1.setViewportView(TextArea_ListPeer);
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 15));
         jLabel3.setText("List Room");
-
-        TextArea_ListRoom.setColumns(20);
-        TextArea_ListRoom.setRows(5);
-        jScrollPane2.setViewportView(TextArea_ListRoom);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14));
         jLabel4.setText("Jumlah Peer  : ");
@@ -100,12 +93,59 @@ public class TrackerView extends javax.swing.JFrame {
             }
         });
 
-        Button_ListRoom.setText("Refresh");
-        Button_ListRoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Button_ListRoomActionPerformed(evt);
+        Table_ListRoom.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Peer Creator", "ID Room"
             }
-        });
+        ));
+        Table_ListRoom.setDoubleBuffered(true);
+        Table_ListRoom.setGridColor(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setViewportView(Table_ListRoom);
+
+        Table_ListPeer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "ID Peer"
+            }
+        ));
+        Table_ListPeer.setDoubleBuffered(true);
+        Table_ListPeer.setGridColor(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setViewportView(Table_ListPeer);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,61 +154,50 @@ public class TrackerView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(320, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(Button_ListPeer)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Button_ListPeer)
-                                .addGap(52, 52, 52))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                                .addGap(26, 26, 26)))
+                                .addComponent(Label_JumlahPeer)))
+                        .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
+                                .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Button_ListRoom)))
-                        .addContainerGap(54, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Label_JumlahRoom)
-                        .addContainerGap(291, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Label_JumlahPeer)
-                        .addContainerGap(293, Short.MAX_VALUE))))
+                                .addComponent(Label_JumlahRoom))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(Label_JumlahPeer))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(Label_JumlahPeer)
                     .addComponent(jLabel5)
                     .addComponent(Label_JumlahRoom))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(Button_ListPeer)
-                    .addComponent(Button_ListRoom))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Button_ListPeer)
+                .addGap(16, 16, 16))
         );
 
         pack();
@@ -176,11 +205,8 @@ public class TrackerView extends javax.swing.JFrame {
 
     private void Button_ListPeerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ListPeerActionPerformed
        ListPeer();
-    }//GEN-LAST:event_Button_ListPeerActionPerformed
-
-    private void Button_ListRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_ListRoomActionPerformed
        ListRoom();
-    }//GEN-LAST:event_Button_ListRoomActionPerformed
+    }//GEN-LAST:event_Button_ListPeerActionPerformed
 
     /**
     * @param args the command line arguments
@@ -189,10 +215,10 @@ public class TrackerView extends javax.swing.JFrame {
         return tracker;
     }
 
-    public void AddPeerView(String Pid) {
-        temporary = temporary + " [" +Pid+"] ";
-        this.TextArea_ListPeer.setText(temporary);
-    }
+//    public void AddPeerView(String Pid) {
+//        temporary = temporary + " [" +Pid+"] ";
+//        this.TextArea_ListPeer.setText(temporary);
+//    }
 
     public void SetJumlahPeer() {
         Integer jumlahpeer = tracker.GetCurrentSumPeer();
@@ -207,20 +233,27 @@ public class TrackerView extends javax.swing.JFrame {
     public void ListPeer() {
         ArrayList<Peer> temp = tracker.GetAllPeers();
         String S = "";
+        int i = 0;
         for (Peer P : temp) {
             Integer id = P.GetID();
-            S = S +" [ " +id.toString() + " ] ";
+            Table_ListPeer.getModel().setValueAt(id, i, 0);
+            i++;
         }
-        TextArea_ListPeer.setText(S);
+       
     }
 
     public void ListRoom() {
         ArrayList<Room> temp = tracker.GetAllRooms();
-        String S = "";
+        int i = 0;
         for (Room R : temp) {
-            S = S + " { " +R.GetID() + " } ";
+            Table_ListRoom.getModel().setValueAt(R.GetPeerCreator().GetID(), i, 0);
+            i++;
         }
-        TextArea_ListRoom.setText(S);
+        i = 0;
+        for (Room R : temp) {
+            Table_ListRoom.getModel().setValueAt(R.GetID(), i, 1);
+            i++;
+        }
     }
 
     public static void main(String args[]) {
@@ -233,11 +266,10 @@ public class TrackerView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button_ListPeer;
-    private javax.swing.JButton Button_ListRoom;
     private javax.swing.JLabel Label_JumlahPeer;
     private javax.swing.JLabel Label_JumlahRoom;
-    private javax.swing.JTextArea TextArea_ListPeer;
-    private javax.swing.JTextArea TextArea_ListRoom;
+    private javax.swing.JTable Table_ListPeer;
+    private javax.swing.JTable Table_ListRoom;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

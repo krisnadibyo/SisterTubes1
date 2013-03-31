@@ -14,6 +14,7 @@ public class Peer {
     private String Tracker_Address;
     private int Tracker_Port;
     private boolean StatusConnection;
+    private String IDCreatedRoom;
 
 
     public Peer(int _Pid){
@@ -27,6 +28,7 @@ public class Peer {
         Tracker_Address = _Tracker_address;
         Tracker_Port = _Tracker_Port;
         StatusConnection = false;
+        IDCreatedRoom = null;
     }
 
     //Getter
@@ -42,6 +44,9 @@ public class Peer {
     }
     public boolean GetStatusConnection() {
         return (StatusConnection);
+    }
+    public String GetIDCreatedRoom() {
+        return (IDCreatedRoom);
     }
 
     //setter
@@ -59,6 +64,17 @@ public class Peer {
     public void SetStatusConnection(boolean _StatusConnection) {
         StatusConnection = _StatusConnection;
     }
+    public void SetIDCreatedRoom(String _IDCreatedRoom) {
+        IDCreatedRoom = _IDCreatedRoom;
+    }
 
+    public boolean HasARoom() {
+        if (IDCreatedRoom != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 }

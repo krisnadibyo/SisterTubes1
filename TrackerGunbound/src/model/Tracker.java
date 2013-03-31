@@ -22,6 +22,7 @@ public class Tracker {
     private ArrayList<Room> Rooms;
     private String Address;
     private int Port;
+    private static int GiveIDPeer;
   
    
 
@@ -34,6 +35,7 @@ public class Tracker {
         CurSumRooms = 0;
         Address = _Address;
         Port = _Port;
+        GiveIDPeer = 1;
     }
     
 
@@ -90,8 +92,14 @@ public class Tracker {
            }
        }
     }
-    public boolean IsThisPeerExist(Peer P) {
-        return(Peers.contains(P));
+    public boolean IsThisPeerExist(int Pid) {
+        boolean result = false;
+        for (Peer P : Peers) {
+            if (P.GetID() == Pid) {
+                result = true;
+            }
+        }
+        return result;
     }
 
     public void AddRoom(String RoomID,Peer PeerCreator,byte maxpeerjoin) {
@@ -132,6 +140,24 @@ public class Tracker {
             }
         }
         return (Rresult);
+    }
+    public int GiveIDPeer() {
+        return (GiveIDPeer++);
+    }
+
+    public ArrayList<Integer> GetAllPeerID() {
+        ArrayList<Integer> buff = new ArrayList<Integer>();
+        for (Peer P : Peers) {
+            buff.add(P.GetID());
+        }
+        return (buff);
+    }
+    public ArrayList<String> GetAllRoomID() {
+        ArrayList<String> buff = new ArrayList<String>();
+        for (Room R : Rooms) {
+            buff.add(R.GetID());
+        }
+        return (buff);
     }
 
     

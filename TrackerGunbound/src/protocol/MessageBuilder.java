@@ -157,5 +157,9 @@ public class MessageBuilder {
     public String GetRoomID() {
         return(getStringFromMsgBytes(25, 50));
     }
+    public String GetRoomIDJoin() {
+        return(getStringFromMsgBytes(24, 50));
+    }
+    
 }
 
