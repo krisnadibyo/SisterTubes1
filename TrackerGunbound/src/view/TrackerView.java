@@ -233,6 +233,7 @@ public class TrackerView extends javax.swing.JFrame {
     public void ListPeer() {
         ArrayList<Peer> temp = tracker.GetAllPeers();
         String S = "";
+        refreshTablePeer();
         int i = 0;
         for (Peer P : temp) {
             Integer id = P.GetID();
@@ -245,6 +246,8 @@ public class TrackerView extends javax.swing.JFrame {
     public void ListRoom() {
         ArrayList<Room> temp = tracker.GetAllRooms();
         int i = 0;
+        refreshTableRoom();
+       System.out.println("Jumlah Room = "+tracker.GetCurrentSumRoom());
         for (Room R : temp) {
             Table_ListRoom.getModel().setValueAt(R.GetPeerCreator().GetID(), i, 0);
             i++;
@@ -253,6 +256,21 @@ public class TrackerView extends javax.swing.JFrame {
         for (Room R : temp) {
             Table_ListRoom.getModel().setValueAt(R.GetID(), i, 1);
             i++;
+        }
+    }
+
+    public void refreshTableRoom() {
+         for (int i = 0; i <= Table_ListRoom.getColumnCount()-1; i++) {
+            for (int j = 0; j <= Table_ListRoom.getRowCount() -1; j ++) {
+                Table_ListRoom.setValueAt(null, j, i);
+            }
+        }
+    }
+    public void refreshTablePeer() {
+         for (int i = 0; i <= Table_ListPeer.getColumnCount()-1; i++) {
+            for (int j = 0; j <= Table_ListPeer.getRowCount() -1; j ++) {
+                Table_ListPeer.setValueAt(null, j, i);
+            }
         }
     }
 

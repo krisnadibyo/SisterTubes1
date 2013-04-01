@@ -21,7 +21,7 @@ public class Message{
     public static byte Failed_Code = (byte) 128;
     public static byte Join_Code = (byte) 253;
     public static byte Start_Code = (byte) 252;
-    public static byte Quit_Code = (byte) 135;
+    public static byte Quit_Code = (byte) 235;
 
     
 
@@ -96,10 +96,11 @@ public class Message{
        MB.writeStrToMsgBytes(24, 50, roomId);
        return (MB.getMessageBytes());
     }    
-    public static byte[] QuitRoom_RequestMessage(int PId) {
-       MessageBuilder MB = new MessageBuilder(24);
+    public static byte[] QuitRoom_RequestMessage(int PId,String roomId) {
+       MessageBuilder MB = new MessageBuilder(74);
        MB.setCode(Quit_Code);
        MB.writeIntToMsgBytes(20,PId);
+       MB.writeStrToMsgBytes(24, 50, roomId);
        return (MB.getMessageBytes());
     }
 

@@ -11,7 +11,7 @@
 
 package view;
 
-import controller.RoomControllerThread;
+
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import model.Peer;
@@ -24,7 +24,7 @@ import model.Room;
 public class RoomView extends javax.swing.JFrame {
 
     /** Creates new form RoomVieew */
-    private RoomControllerThread roomcontrollerThread;
+
     private Room room;
     private String IDRoomView;
 
@@ -41,12 +41,21 @@ public class RoomView extends javax.swing.JFrame {
         return IDRoomView;
     }
 
+    public void RefreshTablePeer() {
+          for (int i = 0; i <= Table_ListPeer.getColumnCount()-1; i++) {
+            for (int j = 0; j <= Table_ListPeer.getRowCount() -1; j ++) {
+                Table_ListPeer.setValueAt(null, j, i);
+            }
+        }
+    }
+
     public void UpdateRoom(Room _room) {
         room = _room;
         initRoom();
         ArrayList<Peer> arr = new ArrayList<Peer>();
         arr = room.getPeerList();
         int i=0;
+        RefreshTablePeer();
         for (Peer P : arr) {
             Table_ListPeer.getModel().setValueAt(P.GetID(), i, 0);
             i++;

@@ -89,8 +89,11 @@ public class Tracker {
         for (Peer P : Peers) {
            if(P.GetID() == Pid) {
                Peers.remove(P);
+                CurSumPeers--;
+               return;
            }
        }
+      
     }
     public boolean IsThisPeerExist(int Pid) {
         boolean result = false;
@@ -114,8 +117,11 @@ public class Tracker {
         for (Room R : Rooms) {
            if(R.GetID().equals(RoomId)) {
                Rooms.remove(R);
+               CurSumRooms--;
+               return;
            }
        }
+       
     }
 
     public boolean IsThisRoomExist(Room room) {

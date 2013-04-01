@@ -55,6 +55,7 @@ public class Room {
         if (IsThisPeerInThisRoom(P)) {
             PeerList.remove(P);
             CurrentPeerJoin--;
+            return;
         }
     }
 

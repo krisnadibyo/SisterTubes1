@@ -109,14 +109,30 @@ public class TrackerControllerThread extends Thread{
                    }
                }
                else if (MB.getCode() == Message.Start_Code) {
-                   if (tracker.GetRoom(MB.GetRoomIDJoin()).IsThisPeerCreator(tracker.GetPeer(MB.getPeerId()))) {
-                       tracker.DeleteRoom(MB.GetRoomIDJoin());
+                   if (tracker.IsThisPeerExist(MB.getPeerId())) {
+                       String IDroomStarted = MB.GetRoomIDJoin();
+                       trackercontroller.DeleteRoomViewByID(IDroomStarted);
+                       tracker.DeleteRoom(IDroomStarted);
+                       trackerview.setJumlahRoom();
+                       trackerview.ListRoom();
                        out.println(SendMessage(Message.Success_ResponseMessage()));
                     }
                    else {
                         out.println(SendMessage(Message.Failed_ResponseMessage()));
                    }
                }
+              else if (MB.getCode() == Message.Quit_Code) {
+                  if (tracker.IsThisPeerExist(MB.getPeerId())) {
+                       int IDPeer = MB.getPeerId();
+                       String IDroom = MB.GetRoomIDJoin();
+                       tracker.GetRoom(IDroom).DeletePeerFromRoom(tracker.GetPeer(IDPeer));
+                       trackercontroller.GetRoomViewByID(IDroom).UpdateRoom(tracker.GetRoom(IDroom));
+                       out.println(SendMessage(Message.Success_ResponseMessage()));
+                    }
+                   else {
+                        out.println(SendMessage(Message.Failed_ResponseMessage()));
+                   }
+              }
             }
 
 

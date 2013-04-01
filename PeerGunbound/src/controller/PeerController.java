@@ -79,13 +79,16 @@ public class PeerController extends Thread {
     public void SetCurrentCommandtoJoinRoom(String roomID) {
         Cur_Command = JoinRoom_Command;
         JoinRoom(roomID);
+        bufferString = roomID;
     }
-    public void SetCurrentCommandtoStartGame() {
+    public void SetCurrentCommandtoStartGame(String _roomid) {
         Cur_Command = StartGame_Command;
-        StartGame();
+        StartGame(_roomid);
     }
-    public void SetCurrentCommandtoQuitGame() {
+    public void SetCurrentCommandtoQuitGame(String _roomid) {
         Cur_Command = QuitRoom_Command;
+        QuitGame(_roomid);
+        bufferString = _roomid;
     }
 
 
@@ -132,17 +135,17 @@ public class PeerController extends Thread {
             System.out.println("This Peer is not connected to tracker");
         }
     }
-    public void StartGame() {
+    public void StartGame(String roomId) {
         if (peer.GetStatusConnection()) {
-            out.println(SendMessage(Message.StartGame_RequestMessage(peer.GetID(), peer.GetIDCreatedRoom())));
+            out.println(SendMessage(Message.StartGame_RequestMessage(peer.GetID(),roomId)));
         }
         else {
             System.out.println("This Peer is not connected to tracker");
         }
     }
-    public void QuitGame() {
+    public void QuitGame(String roomID) {
         if (peer.GetStatusConnection()) {
-            out.println(SendMessage(Message.QuitRoom_RequestMessage(peer.GetID())));
+            out.println(SendMessage(Message.QuitRoom_RequestMessage(peer.GetID(),roomID)));
         }
         else {
             System.out.println("This Peer is not connected to tracker");
@@ -172,7 +175,8 @@ public class PeerController extends Thread {
                     MessageBuilder MB = new MessageBuilder(msg);
                     if (MB.getCode() == Message.Success_Code) {
                           System.out.println("Room has been succesfull created !");
-                          peer.SetIDCreatedRoom(bufferString);  
+                          peer.addIDCreatedRoom(bufferString);
+                          peerview.UpdateRoomCreated();
                     }
                     else if(MB.getCode() == Message.Failed_Code) {
                          System.out.println("Room has been Failed created!");
@@ -194,6 +198,8 @@ public class PeerController extends Thread {
                     MessageBuilder MB = new MessageBuilder(msg);
                     if (MB.getCode() == Message.Success_Code) {
                           System.out.println("This peer has been added to desired room");
+                          peer.addIDJoinedRoom(bufferString);
+                          peerview.UpdateRoomJoined();
                     }
                     else if(MB.getCode() == Message.Failed_Code) {
                          System.out.println("Join Failed");
@@ -204,10 +210,23 @@ public class PeerController extends Thread {
                     MessageBuilder MB = new MessageBuilder(msg);
                     if (MB.getCode() == Message.Success_Code) {
                           System.out.println("Start game success");
-                          peer.SetIDCreatedRoom(null);
+                          peer.DeleteCreatedRoom(bufferString);
+                          peerview.UpdateRoomCreated();
                     }
                     else if(MB.getCode() == Message.Failed_Code) {
                          System.out.println("Start game Failed");
+                    }
+                }
+                else if (Cur_Command == QuitRoom_Command) {
+                    byte[] msg = ReceiveMessage(inputLine);
+                    MessageBuilder MB = new MessageBuilder(msg);
+                    if (MB.getCode() == Message.Success_Code) {
+                          System.out.println("Start game success");
+                          peer.DeleteJoinedRoom(bufferString);
+                          peerview.UpdateRoomJoined();
+                    }
+                    else if(MB.getCode() == Message.Failed_Code) {
+                         System.out.println("Quit game Failed");
                     }
                 }
                 SetCurrentCommandtoListen();

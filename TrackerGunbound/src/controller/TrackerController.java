@@ -49,6 +49,18 @@ public class TrackerController extends Thread{
         return buff;
     }
 
+    public void DeleteRoomViewByID(String ID) {
+        RoomView buff = null;
+        for (RoomView rv : roomviews) {
+            if (rv.getRoomViewID().equals(ID)) {
+                rv.setVisible(false);
+                rv.dispose();
+                roomviews.remove(rv);
+                return;
+            }
+        }
+    }
+
     public void run () {
          try {
             ServerSocket serverSocket = null;

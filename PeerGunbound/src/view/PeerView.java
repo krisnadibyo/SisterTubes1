@@ -58,8 +58,17 @@ public class PeerView extends javax.swing.JFrame {
         }
     }
 
+    public void RefreshTable() {
+          for (int i = 0; i <= Table_ListRoom.getColumnCount() -1; i++) {
+            for (int j = 0; j <= Table_ListRoom.getRowCount() -1; j ++) {
+                Table_ListRoom.setValueAt(null, j, i);
+            }
+        }
+    }
+
     public void SetListRoom(ArrayList<String> arr) {
         int i = 0;
+        RefreshTable();
         for (String s : arr) {
             Table_ListRoom.getModel().setValueAt(s, i, 0);
             i++;
@@ -70,6 +79,24 @@ public class PeerView extends javax.swing.JFrame {
         for (String s : arr) {
             ComboBox_RoomID.addItem(s);
         }
+    }
+
+    public void UpdateRoomJoined() {
+       ComboBox_RoomJoined.removeAllItems();
+       for (String s : peer.GetIDJoinedRoom()) {
+           ComboBox_RoomJoined.addItem(s);
+       }
+    }
+    public void UpdateRoomCreated() {
+       ComboBox_RoomCreated.removeAllItems();
+       for (String s : peer.GetIDCreatedRoom()) {
+           ComboBox_RoomCreated.addItem(s);
+       }
+    }
+
+    public void UpdateRoomCreatedJoined() {
+        UpdateRoomCreated();
+        UpdateRoomJoined();
     }
 
     /** This method is called from within the constructor to
@@ -98,11 +125,11 @@ public class PeerView extends javax.swing.JFrame {
         ComboBox_RoomID = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         Table_ListRoom = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox();
+        ComboBox_RoomCreated = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        ComboBox_RoomJoined = new javax.swing.JComboBox();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,7 +170,7 @@ public class PeerView extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14));
         jLabel1.setText("JOIN ROOM");
 
         Button_CreateRoom.setText("Create");
@@ -157,8 +184,6 @@ public class PeerView extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18));
         jLabel2.setText("Create Room");
-
-        ComboBox_RoomID.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         Table_ListRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -188,19 +213,25 @@ public class PeerView extends javax.swing.JFrame {
         Table_ListRoom.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(Table_ListRoom);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14));
         jLabel4.setText("START GAME");
 
         jButton1.setText("Start");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14));
         jLabel7.setText("QUIT GAME");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jButton4.setText("Quit");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -245,8 +276,8 @@ public class PeerView extends javax.swing.JFrame {
                         .addContainerGap(209, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, 99, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, 99, Short.MAX_VALUE))
+                            .addComponent(ComboBox_RoomJoined, javax.swing.GroupLayout.Alignment.LEADING, 0, 99, Short.MAX_VALUE)
+                            .addComponent(ComboBox_RoomCreated, 0, 99, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton4, 0, 0, Short.MAX_VALUE)
@@ -288,13 +319,13 @@ public class PeerView extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ComboBox_RoomCreated, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ComboBox_RoomJoined, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4))
                 .addGap(17, 17, 17))
         );
@@ -339,6 +370,16 @@ public class PeerView extends javax.swing.JFrame {
         peercontroller.SetCurrentCommandtoJoinRoom(roomID);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String roomID = ComboBox_RoomCreated.getSelectedItem().toString();
+        peercontroller.SetCurrentCommandtoStartGame(roomID);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String roomID = ComboBox_RoomJoined.getSelectedItem().toString();
+        peercontroller.SetCurrentCommandtoQuitGame(roomID);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -354,7 +395,9 @@ public class PeerView extends javax.swing.JFrame {
     private javax.swing.JButton Button_ConnectTracker;
     private javax.swing.JButton Button_CreateRoom;
     private javax.swing.JComboBox ComboBox_JmlPemain;
+    private javax.swing.JComboBox ComboBox_RoomCreated;
     private javax.swing.JComboBox ComboBox_RoomID;
+    private javax.swing.JComboBox ComboBox_RoomJoined;
     private javax.swing.JLabel Label_IDPeer;
     private javax.swing.JLabel Label_statusConnection;
     private javax.swing.JTable Table_ListRoom;
@@ -363,8 +406,6 @@ public class PeerView extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

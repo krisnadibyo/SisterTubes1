@@ -21,7 +21,7 @@ public class Message{
     public static byte Failed_Code = (byte) 128;
     public static byte Join_Code = (byte) 253;
     public static byte Start_Code = (byte) 252;
-    public static byte Quit_Code = (byte) 135;
+    public static byte Quit_Code = (byte) 235;
 
     
 
